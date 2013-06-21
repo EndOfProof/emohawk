@@ -30,9 +30,6 @@ ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 
 RSpec.configure do |config|
   config.include Capybara::DSL              # Let's us use the capybara stuf in our specs
-  config.after(:each) do
-    Warden.test_reset!
-  end
 
   config.mock_with :rspec
   
