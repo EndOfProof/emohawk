@@ -16,4 +16,4 @@
 
 *.swp
 
-coverage
+coverage/*
