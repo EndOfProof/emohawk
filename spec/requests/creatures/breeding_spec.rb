@@ -44,7 +44,7 @@ describe 'Breeding creatures' do
 		creature1 = FactoryGirl.create(:creature_too_young_to_breed)
 		creature2 = FactoryGirl.create(:creature)
 
-		post '/' creature1_id: creature1.id, creature2_id: creature2.id
+		post '/', creature1_id: creature1.id, creature2_id: creature2.id
 		response.status.should = 422
     response.body.should == {error: 'Creatures must be old enough to breed'}.to_json
 	end
@@ -53,7 +53,7 @@ describe 'Breeding creatures' do
 		creature1 = FactoryGirl.create(:creature_too_old_to_breed)
 		creature2 = FactoryGirl.create(:creature)
 
-		post '/' creature1_id: creature1.id, creature2_id: creature2.id
+		post '/', creature1_id: creature1.id, creature2_id: creature2.id
 		response.status.should = 422
     response.body.should == {error: 'Creatures must be young enough to breed'}.to_json
 	end
@@ -62,7 +62,7 @@ describe 'Breeding creatures' do
 		creature1 = FactoryGirl.create(:creature_male)
 		creature2 = FactoryGirl.create(:creature, father: creature1)
 
-		post '/' creature1_id: creature1.id, creature2_id: creature2.id
+		post '/', creature1_id: creature1.id, creature2_id: creature2.id
 		response.status.should = 422
     response.body.should == {error: 'Creatures must not be related'}.to_json
 	end
