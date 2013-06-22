@@ -17,3 +17,5 @@
 *.swp
 
 coverage/*
+
+Gemfile.lock

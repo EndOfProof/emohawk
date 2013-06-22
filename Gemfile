@@ -9,6 +9,8 @@ gem 'rails-api'
 
 gem 'sqlite3'
 
+gem 'simple_enum'
+
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'

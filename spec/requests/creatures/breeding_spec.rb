@@ -10,7 +10,7 @@ describe 'Breeding creatures' do
   it 'requires the creatures given to be different' do
     post '/', creature1_id: 1, creature2_id: 1
     response.status.should == 422
-    response.body.should == {error: 'Cannot breed a creature with itself'}
+    response.body.should == {error: 'Cannot breed a creature with itself'}.to_json
   end
 
   it 'requires the creatures to be different genders' do
@@ -19,7 +19,7 @@ describe 'Breeding creatures' do
 
     post '/', creature1_id: creature1.id, creature2_id: creature2.id
     response.status.should == 422
-    response.body.should == {error: 'Cannot breed creatures of the same gender'}
+    response.body.should == {error: 'Cannot breed creatures of the same gender'}.to_json
   end
 
   it 'requires the creatures to be compatible' do
@@ -28,16 +28,16 @@ describe 'Breeding creatures' do
 
     post '/', creature1_id: creature1.id, creature2_id: creature2.id
     response.status.should == 422
-    response.body.should == {error: 'Cannot breed creatures with incompatable types'}
+    response.body.should == {error: 'Cannot breed creatures with incompatable types'}.to_json
   end
 
   it 'returns the details of the new creature that has been bred' do
-    creature1 = FactoryGirl.create(:creature_female_flame)
-    creature2 = FactoryGirl.create(:creature_male_flame)
+    creature1 = FactoryGirl.create(:creature_female)
+    creature2 = FactoryGirl.create(:creature_male)
 
     post '/', creature1_id: creature1.id, creature2_id: creature2.id
     response.status.should == 200
-    JSON.parse(response.body).should have_key('creature_id')
+    JSON.parse(response.body).should have_key('creature')
   end
 
 	it 'requires the creatures to be old enough to breed' do
@@ -45,7 +45,7 @@ describe 'Breeding creatures' do
 		creature2 = FactoryGirl.create(:creature)
 
 		post '/', creature1_id: creature1.id, creature2_id: creature2.id
-		response.status.should = 422
+		response.status.should == 422
     response.body.should == {error: 'Creatures must be old enough to breed'}.to_json
 	end
 
@@ -54,16 +54,16 @@ describe 'Breeding creatures' do
 		creature2 = FactoryGirl.create(:creature)
 
 		post '/', creature1_id: creature1.id, creature2_id: creature2.id
-		response.status.should = 422
+		response.status.should == 422
     response.body.should == {error: 'Creatures must be young enough to breed'}.to_json
 	end
 
 	it 'requires the creatures not be related to breed' do
 		creature1 = FactoryGirl.create(:creature_male)
-		creature2 = FactoryGirl.create(:creature, father: creature1)
+		creature2 = FactoryGirl.create(:creature_female, father: creature1)
 
 		post '/', creature1_id: creature1.id, creature2_id: creature2.id
-		response.status.should = 422
+		response.status.should == 422
     response.body.should == {error: 'Creatures must not be related'}.to_json
 	end
 end
