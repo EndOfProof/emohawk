@@ -23,7 +23,7 @@ class CreatureBreeder
   ##
   # The list of errors that occurred.
   def errors
-
+		@errors.join(', ')
   end
 
   ##
@@ -32,7 +32,21 @@ class CreatureBreeder
   #
   # @return [Boolean] true if the entities are correct; false otherwise
   def correct_parents_given?
-    
+		if @mother.instance_of?(Creature) && @father.instance_of?(Creature)	
+			if @mother == @father
+				@errors.push "Cannot breed a creature with itself"
+			else
+				if @mother.gender == :male
+					tmp = @father
+					@father = @mother
+					@mother = tmp
+				end
+			end
+		else
+			@errors.push "Two creatures are required to breed"
+		end
+	
+		@errors.empty? ? true : false
   end
 
   ##
@@ -41,7 +55,31 @@ class CreatureBreeder
   #
   # @return [Boolean] true if the parents are compatable; false otherwise.
   def parents_are_compatable?
-    
+    if @mother.gender == @father.gender
+			@errors.push "Cannot breed creatures of the same gender"
+		end
+
+		if @mother.age < 7 || @father.age < 7
+			@errors.push "Creatures must be old enough to breed"
+		end
+
+		if @mother.age > 30 || @father.age > 30
+			@errors.push "Creatures must be young enough to breed"
+		end
+
+		if @mother.father == @father || @father.mother == @mother
+			@errors.push "Creatures must not be related"
+		end
+
+		if @mother.father && @mother.father == @father.father
+			@errors.push "Creatures must not be related"
+		end
+
+		if @mother.mother && @mother.mother == @father.mother
+			@errors.push "Creatures must not be related"
+		end
+		
+		@errors.empty? ? true : false
   end
 
   ##
@@ -49,6 +87,12 @@ class CreatureBreeder
   #
   # @return [Creature] the new creature
   def create_new_creature_from_parents
-
+		child = Creature.new
+		child.mother = @mother
+		child.father = @father
+		child.age = 0
+		child.gender = [:male,:female].sample
+		child.save
+		child
   end
 end

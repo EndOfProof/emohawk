@@ -8,6 +8,7 @@ describe 'Breeding creatures' do
   end
 
   it 'requires the creatures given to be different' do
+    creature1 = FactoryGirl.create(:creature_female)
     post '/', creature1_id: 1, creature2_id: 1
     response.status.should == 422
     response.body.should == {error: 'Cannot breed a creature with itself'}.to_json
@@ -41,8 +42,8 @@ describe 'Breeding creatures' do
   end
 
 	it 'requires the creatures to be old enough to breed' do
-		creature1 = FactoryGirl.create(:creature_too_young_to_breed)
-		creature2 = FactoryGirl.create(:creature)
+		creature1 = FactoryGirl.create(:creature_too_young_to_breed, gender: :male)
+		creature2 = FactoryGirl.create(:creature, gender: :female)
 
 		post '/', creature1_id: creature1.id, creature2_id: creature2.id
 		response.status.should == 422
@@ -50,8 +51,8 @@ describe 'Breeding creatures' do
 	end
 
 	it 'requires the creatures to be young enough to breed' do
-		creature1 = FactoryGirl.create(:creature_too_old_to_breed)
-		creature2 = FactoryGirl.create(:creature)
+		creature1 = FactoryGirl.create(:creature_too_old_to_breed, gender: :male)
+		creature2 = FactoryGirl.create(:creature, gender: :female)
 
 		post '/', creature1_id: creature1.id, creature2_id: creature2.id
 		response.status.should == 422
