@@ -24,6 +24,7 @@ describe 'Breeding creatures' do
   end
 
   it 'requires the creatures to be compatible' do
+    pending "Types have not yet been implemented"
     creature1 = FactoryGirl.create(:creature_female_flame)
     creature2 = FactoryGirl.create(:creature_male_water)
 
