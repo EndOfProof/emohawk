@@ -56,27 +56,27 @@ class CreatureBreeder
   # @return [Boolean] true if the parents are compatable; false otherwise.
   def parents_are_compatable?
     if @mother.gender == @father.gender
-			@errors.push "Cannot breed creatures of the same gender"
+			@errors << "Cannot breed creatures of the same gender"
 		end
 
 		if @mother.age < 7 || @father.age < 7
-			@errors.push "Creatures must be old enough to breed"
+			@errors << "Creatures must be old enough to breed"
 		end
 
 		if @mother.age > 30 || @father.age > 30
-			@errors.push "Creatures must be young enough to breed"
+			@errors << "Creatures must be young enough to breed"
 		end
 
 		if @mother.father == @father || @father.mother == @mother
-			@errors.push "Creatures must not be related"
+			@errors << "Creatures must not be related"
 		end
 
 		if @mother.father && @mother.father == @father.father
-			@errors.push "Creatures must not be related"
+			@errors << "Creatures must not be related"
 		end
 
 		if @mother.mother && @mother.mother == @father.mother
-			@errors.push "Creatures must not be related"
+			@errors << "Creatures must not be related"
 		end
 		
 		@errors.empty? ? true : false

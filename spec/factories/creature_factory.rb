@@ -15,5 +15,11 @@ FactoryGirl.define do
 		factory :creature_female do
 			gender :female
 		end
+
+    trait :training do
+      state :training
+    end
+
+    factory :creature_training, traits: [:training]
 	end
 end
